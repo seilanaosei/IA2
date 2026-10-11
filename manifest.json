@@ -1,0 +1,14 @@
+{
+  "name": "Íris IA Multimídia",
+  "short_name": "Íris IA",
+  "description": "Chat, imagens e música em uma interface.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111019",
+  "theme_color": "#111019",
+  "icons": [
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}

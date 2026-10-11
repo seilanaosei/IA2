@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111019">
+<link rel="manifest" href="manifest.json">
+<title>Íris IA — Multimídia</title>
+<style>
+:root{color-scheme:dark;--bg:#111019;--panel:#1b1925;--panel2:#242132;--text:#f4f0ff;--muted:#aaa3bd;--purple:#a78bfa;--line:#393348}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px system-ui,-apple-system,sans-serif}header{padding:20px 16px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#111019ee;backdrop-filter:blur(12px);z-index:2}h1{font-size:22px;margin:0}header p{color:var(--muted);margin:5px 0 0;font-size:13px}.wrap{max-width:850px;margin:auto;padding:16px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}.tab,button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:12px;font:inherit}.tab.active,button.primary{background:var(--purple);color:#171221;border-color:var(--purple);font-weight:700}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}.panel h2{font-size:18px;margin:0 0 8px}.hint{font-size:13px;color:var(--muted);line-height:1.5}textarea,input{width:100%;background:#100f17;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;margin:8px 0}textarea{min-height:110px;resize:vertical}button{cursor:pointer;margin:5px 4px 0 0}button:disabled{opacity:.5}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row button{flex:1}.status{color:var(--muted);font-size:13px;margin-top:8px;white-space:pre-wrap}.output{white-space:pre-wrap;line-height:1.55;background:#100f17;border-radius:12px;padding:12px;min-height:48px;margin-top:12px;overflow-wrap:anywhere}.hidden{display:none!important}.preview{max-width:100%;max-height:320px;display:block;border-radius:12px;margin:12px auto}.links a{color:#c4b5fd;display:inline-block;margin:6px 10px 0 0}.foot{font-size:12px;color:var(--muted);padding:4px 4px 24px}label{font-size:13px;color:var(--muted)}.small{font-size:12px}
+</style>
+</head>
+<body>
+<header><h1>Íris IA</h1><p>Chat, imagens e música em um só lugar</p></header>
+<main class="wrap">
+<div class="tabs">
+<button class="tab active" data-tab="chat">💬 Chat</button>
+<button class="tab" data-tab="image">🖼️ Imagens</button>
+<button class="tab" data-tab="music">🎵 Música</button>
+</div>
+<section id="chat" class="view">
+<div class="panel">
+<h2>Converse com a IA</h2>
+<p class="hint">Para respostas inteligentes, use uma chave gratuita do Gemini. Ela fica salva somente neste navegador. Não publique este app com sua chave dentro do código.</p>
+<label for="key">Chave da API Gemini</label>
+<input id="key" type="password" autocomplete="off" placeholder="Cole sua chave aqui">
+<div class="row"><button id="saveKey" class="primary">Salvar chave neste aparelho</button><button id="getKey">Obter chave grátis</button></div>
+<label for="prompt">Sua mensagem</label>
+<textarea id="prompt" placeholder="Escreva o que você quer perguntar..."></textarea>
+<button id="send" class="primary">Enviar mensagem</button>
+<div id="chatStatus" class="status"></div>
+<div id="answer" class="output">As respostas aparecerão aqui.</div>
+<button id="clearChat">Limpar conversa</button>
+</div>
+</section>
+<section id="image" class="view hidden">
+<div class="panel">
+<h2>Gerar ou editar imagens</h2>
+<p class="hint">Escolha uma ferramenta gratuita disponível. A geração acontece no serviço externo, que pode ter fila ou limites próprios.</p>
+<label for="imgPrompt">Descreva a imagem ou a alteração</label>
+<textarea id="imgPrompt" placeholder="Ex.: uma casa no interior ao entardecer, estilo pintura a óleo..."></textarea>
+<div class="row"><button id="copyImg" class="primary">Copiar descrição</button><button id="imageTools">Abrir geradores</button></div>
+<label for="imageFile">Ou selecione uma imagem para visualizar aqui</label>
+<input id="imageFile" type="file" accept="image/*">
+<img id="preview" class="preview hidden" alt="Prévia da imagem escolhida">
+<div class="links">
+<a href="https://huggingface.co/spaces?category=image-generation" target="_blank" rel="noopener">Gerar imagens ↗</a>
+<a href="https://huggingface.co/spaces?category=image-editing" target="_blank" rel="noopener">Editar imagens ↗</a>
+</div>
+<div id="imgStatus" class="status"></div>
+</div>
+</section>
+<section id="music" class="view hidden">
+<div class="panel">
+<h2>Criar música</h2>
+<p class="hint">Descreva gênero, instrumentos, clima e duração. Para editar uma música existente, procure uma ferramenta que aceite áudio enviado.</p>
+<label for="musicPrompt">Ideia musical</label>
+<textarea id="musicPrompt" placeholder="Ex.: MPB acústica, violão dedilhado, voz suave, melancólica, andamento lento..."></textarea>
+<div class="row"><button id="copyMusic" class="primary">Copiar descrição</button><button id="musicTools">Abrir geradores</button></div>
+<div class="links">
+<a href="https://huggingface.co/spaces?category=music-generation" target="_blank" rel="noopener">Gerar músicas ↗</a>
+<a href="https://huggingface.co/spaces?category=audio-separation" target="_blank" rel="noopener">Separar voz e instrumentos ↗</a>
+</div>
+<div id="musicStatus" class="status"></div>
+</div>
+</section>
+<div class="foot">Protótipo PWA gratuito. Serviços externos têm suas próprias regras, filas e cotas. Não existe garantia de geração ilimitada e gratuita com modelos de alta qualidade.</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('hidden',v.id!==b.dataset.tab))}));
+$('key').value=localStorage.getItem('iris_gemini_key')||'';
+$('saveKey').onclick=()=>{localStorage.setItem('iris_gemini_key',$('key').value.trim());$('chatStatus').textContent=$('key').value.trim()?'Chave salva neste navegador.':'Chave removida.'};
+$('getKey').onclick=()=>window.open('https://aistudio.google.com/app/apikey','_blank','noopener');
+let history=[];
+$('send').onclick=async()=>{
+ const key=$('key').value.trim(), prompt=$('prompt').value.trim();
+ if(!key){$('chatStatus').textContent='Cole uma chave da API Gemini primeiro.';return}
+ if(!prompt){$('chatStatus').textContent='Escreva uma mensagem.';return}
+ $('send').disabled=true;$('chatStatus').textContent='Pensando…';$('answer').textContent='';
+ try{
+  history.push({role:'user',parts:[{text:prompt}]});
+  const response=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:history,generationConfig:{temperature:0.8}})});
+  const data=await response.json();
+  if(!response.ok) throw new Error(data.error?.message||('Erro HTTP '+response.status));
+  const text=data.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')||'A IA não retornou texto.';
+  history.push({role:'model',parts:[{text}]});$('answer').textContent=text;$('chatStatus').textContent='Resposta concluída.';
+ }catch(e){history.pop();$('chatStatus').textContent='Não foi possível responder: '+e.message+' Verifique a chave, a conexão e a cota gratuita.'}
+ finally{$('send').disabled=false}
+};
+$('clearChat').onclick=()=>{history=[];$('answer').textContent='Conversa limpa.';$('chatStatus').textContent=''};
+async function copyText(value,status){if(!value.trim()){status.textContent='Escreva uma descrição primeiro.';return}try{await navigator.clipboard.writeText(value);status.textContent='Descrição copiada. Cole no gerador escolhido.'}catch{status.textContent='Selecione e copie a descrição manualmente.'}}
+$('copyImg').onclick=()=>copyText($('imgPrompt').value,$('imgStatus'));
+$('copyMusic').onclick=()=>copyText($('musicPrompt').value,$('musicStatus'));
+$('imageTools').onclick=()=>window.open('https://huggingface.co/spaces?category=image-generation','_blank','noopener');
+$('musicTools').onclick=()=>window.open('https://huggingface.co/spaces?category=music-generation','_blank','noopener');
+$('imageFile').onchange=e=>{const f=e.target.files?.[0];if(!f)return;const url=URL.createObjectURL(f);$('preview').src=url;$('preview').classList.remove('hidden');$('imgStatus').textContent='Prévia local. A imagem não foi enviada nem modificada.'};
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
